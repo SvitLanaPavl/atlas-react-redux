@@ -27,7 +27,7 @@ const initialState: BoardState = {
 }
 
 // Defining Reducers: adding a list, deleting a list
-// adding a card, clearing the board
+// adding a card, clearing the board, moving card
 
 export const listsSlice = createSlice({
   name: 'lists',
@@ -76,8 +76,26 @@ export const listsSlice = createSlice({
       state.lists = [];
       state.cards = [];
     },
+    moveCard: (
+      state,
+      action: PayloadAction<{ cardId: string; sourceListId: string; destinationListId: string }>
+    ) => {
+      const { cardId, sourceListId, destinationListId } = action.payload;
+
+      // Removing the card from the source list
+      const sourceList = state.lists.find(list => list.id === sourceListId);
+      if (sourceList) {
+        sourceList.cardIds = sourceList.cardIds.filter(id => id !== cardId)
+      }
+
+      //Adding the card to the destination list
+      const destinationList = state.lists.find(list => list.id === destinationListId);
+      if (destinationList) {
+        destinationList.cardIds.push(cardId);
+      }
+    },
   },
 });
 
-export const { addList, deleteList, addCard, deleteCard, clearBoard } = listsSlice.actions;
+export const { addList, deleteList, addCard, deleteCard, clearBoard, moveCard } = listsSlice.actions;
 export default listsSlice.reducer;
