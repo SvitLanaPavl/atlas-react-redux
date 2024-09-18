@@ -62,6 +62,13 @@ export const listsSlice = createSlice({
         state.cards.push(newCard);
       }
     },
+    deleteCard: (state, action: PayloadAction<string>) => {
+      const cardId = action.payload;
+      state.cards = state.cards.filter(card => card.id !== cardId);
+      state.lists.forEach(list => {
+        list.cardIds = list.cardIds.filter(id => id !== cardId);
+      });
+    },
     clearBoard: state => {
       state.lists = [];
       state.cards = [];
@@ -69,5 +76,5 @@ export const listsSlice = createSlice({
   },
 });
 
-export const { addList, deleteList, addCard, clearBoard } = listsSlice.actions;
+export const { addList, deleteList, addCard, deleteCard, clearBoard } = listsSlice.actions;
 export default listsSlice.reducer;

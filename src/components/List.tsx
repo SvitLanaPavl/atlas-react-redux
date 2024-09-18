@@ -12,10 +12,10 @@ interface ListProps {
 const List: React.FC<ListProps> = ({ id, title, cards }) => {
   return (
     <div className="group/list h-full min-w-96 p-4 flex-1">
-      <DeleteListButton />
+      <DeleteListButton listId={id} />
       <h3>{title}</h3>
       {cards.map((card) => (
-        <Card key={card.id} title={card.title} description={card.description} />
+        <Card key={card.id} id={card.id} title={card.title} description={card.description} />
       ))}
       <NewCardForm listId={id} />
     </div>

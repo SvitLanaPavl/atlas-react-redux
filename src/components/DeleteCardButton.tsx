@@ -1,8 +1,21 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteCard } from '../slices/listsSlice';
 
-const DeleteCardButton: React.FC = () => {
+interface deleteCardButtonProps {
+  cardId: string;
+}
+
+const DeleteCardButton: React.FC<deleteCardButtonProps> = ( { cardId }) => {
+  const dispatch = useDispatch();
+
+  const handleDelete = () => {
+    dispatch(deleteCard(cardId));
+  }
+
+
   return (
-    <button className="hidden group-hover/card:block" onClick={() => alert('Delete card')}>
+    <button className="hidden group-hover/card:block" onClick={handleDelete}>
       <svg
         className="h-[20px] w-[20px]"
         xmlns="http://www.w3.org/2000/svg"
