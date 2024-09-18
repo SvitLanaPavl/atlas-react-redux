@@ -1,16 +1,73 @@
-import { createSlice } from "@reduxjs/toolkit";
+// Manages: adding a list, deleting a list,
+// adding a card to a list and clearing the board
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
-  items: [
-    { id: "1", name: "Item 1", completed: false },
-    { id: "2", name: "Item 2", completed: true },
-  ],
-};
+// Defining Initial State
 
-export const listSlice = createSlice({
-  name: "Lists",
+interface Card {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface List {
+  id: string;
+  title: string;
+  cardIds: string[];
+}
+
+interface BoardState {
+  lists: List[];
+  cards: Card[];
+}
+
+const initialState: BoardState = {
+  lists: [],
+  cards: [],
+}
+
+// Defining Reducers: adding a list, deleting a list
+// adding a card, clearing the board
+
+export const listsSlice = createSlice({
+  name: 'lists',
   initialState,
-  reducers: {},
+  reducers: {
+    addList: (state, action: PayloadAction<string>) => {
+      const newList: List = {
+        id: new Date().toISOString(),
+        title: action.payload,
+        cardIds: [],
+      };
+      state.lists.push(newList);
+    },
+    deleteList: (state, action: PayloadAction<string>) => {
+      const listId = action.payload;
+      state.lists = state.lists.filter(list => list.id !== listId);
+      state.cards = state.cards.filter(card => !state.lists.find(list => list.cardIds.includes(card.id)));
+    },
+    addCard: (
+      state,
+      action: PayloadAction<{ listId: string; title: string; description: string }>
+    ) => {
+      const { listId, title, description } = action.payload;
+      const newCard: Card = {
+        id: new Date().toISOString(),
+        title,
+        description,
+      };
+      const list = state.lists.find(list => list.id === listId);
+      if (list) {
+        list.cardIds.push(newCard.id);
+        state.cards.push(newCard);
+      }
+    },
+    clearBoard: state => {
+      state.lists = [];
+      state.cards = [];
+    },
+  },
 });
 
-export default listSlice.reducer;
+export const { addList, deleteList, addCard, clearBoard } = listsSlice.actions;
+export default listsSlice.reducer;
