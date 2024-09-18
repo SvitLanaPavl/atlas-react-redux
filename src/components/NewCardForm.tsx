@@ -13,7 +13,7 @@ const NewCardForm: React.FC<NewCardFormProps> = ( { listId } ) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() && description.trim()) {
+    if (title.trim() || description.trim()) {
       dispatch(addCard({ listId, title, description }));
       setTitle('');
       setDescription('');

@@ -43,8 +43,11 @@ export const listsSlice = createSlice({
     },
     deleteList: (state, action: PayloadAction<string>) => {
       const listId = action.payload;
-      state.lists = state.lists.filter(list => list.id !== listId);
-      state.cards = state.cards.filter(card => !state.lists.find(list => list.cardIds.includes(card.id)));
+      const listToDelete = state.lists.find(list => list.id === listId);
+      if (listToDelete) {
+        state.lists = state.lists.filter(list => list.id !== listId);
+        state.cards = state.cards.filter(card => !listToDelete.cardIds.includes(card.id));
+      }
     },
     addCard: (
       state,

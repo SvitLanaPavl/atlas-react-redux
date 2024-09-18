@@ -11,7 +11,7 @@ interface ListProps {
 
 const List: React.FC<ListProps> = ({ id, title, cards }) => {
   return (
-    <div className="group/list h-full min-w-96 p-4 flex-1">
+    <div className="group/list h-full min-w-[25%] max-w-[25%] p-4 flex-shrink-0 flex-grow">
       <DeleteListButton listId={id} />
       <h3>{title}</h3>
       {cards.map((card) => (
