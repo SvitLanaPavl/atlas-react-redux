@@ -68,9 +68,10 @@ export const listsSlice = createSlice({
     deleteCard: (state, action: PayloadAction<string>) => {
       const cardId = action.payload;
       state.cards = state.cards.filter(card => card.id !== cardId);
-      state.lists.forEach(list => {
-        list.cardIds = list.cardIds.filter(id => id !== cardId);
-      });
+      state.lists = state.lists.map(list => ({
+        ...list,
+        cardIds: list.cardIds.filter(id => id !== cardId),
+      }));
     },
     clearBoard: state => {
       state.lists = [];

@@ -12,7 +12,11 @@ const Board: React.FC = () => {
   const dispatch = useDispatch();
 
   const sensors = useSensors(
-    useSensor(PointerSensor)
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      }
+    })
   );
 
   const handleDragEnd = (event: any) => {

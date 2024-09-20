@@ -6,10 +6,13 @@ interface deleteCardButtonProps {
   cardId: string;
 }
 
-const DeleteCardButton: React.FC<deleteCardButtonProps> = ( { cardId }) => {
+const DeleteCardButton: React.FC<deleteCardButtonProps> = React.memo(( { cardId }) => {
   const dispatch = useDispatch();
 
-  const handleDelete = () => {
+  const handleDelete = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Deleting card with ID:", cardId);
     dispatch(deleteCard(cardId));
   }
 
@@ -32,6 +35,6 @@ const DeleteCardButton: React.FC<deleteCardButtonProps> = ( { cardId }) => {
       </svg>
     </button>
   );
-};
+});
 
 export default DeleteCardButton;
